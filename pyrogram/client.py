@@ -184,9 +184,9 @@ class Client(Methods):
             Defaults to 1.
     """
 
-    APP_VERSION = f"UbotX {__version__}"
-    DEVICE_MODEL = f"AnonyMous"
-    SYSTEM_VERSION = f"AnonyMous"
+    APP_VERSION = f"TangoUserBot {__version__}"
+    DEVICE_MODEL = f"TangoPhoNe"
+    SYSTEM_VERSION = f"Ubuntu 22.0.4"
 
     LANG_CODE = "en"
 
