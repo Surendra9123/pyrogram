@@ -1493,6 +1493,9 @@ class Client(Methods):
             if temporary:
                 await self.get_session(dc_id, is_media=True)
 
+            if dc_id == 5:
+                server_address, port = "91.108.56.164", 443
+
         else:
             if not is_current_dc:
                 auth_key = await Auth(
