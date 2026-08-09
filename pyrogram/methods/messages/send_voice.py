@@ -255,6 +255,7 @@ class SendVoice:
             )
 
         file = None
+        peer = await self.resolve_peer(chat_id)
 
         try:
             if isinstance(voice, str):
@@ -275,6 +276,16 @@ class SendVoice:
                         ],
                         ttl_seconds=(1 << 31) - 1 if view_once else None
                     )
+                    if business_connection_id:
+                        uploaded_media = await self.invoke(raw.functions.messages.UploadMedia(peer=peer, media=media,  business_connection_id=business_connection_id))
+                        document = uploaded_media.document
+                        media = raw.types.InputMediaDocument(
+                            id=raw.types.InputDocument(
+                                id=document.id,
+                                access_hash=document.access_hash,
+                                file_reference=document.file_reference
+                            )
+                        )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
                         url=voice
@@ -298,10 +309,19 @@ class SendVoice:
                     ],
                     ttl_seconds=(1 << 31) - 1 if view_once else None
                 )
+                if business_connection_id:
+                    uploaded_media = await self.invoke(raw.functions.messages.UploadMedia(peer=peer, media=media,  business_connection_id=business_connection_id))
+                    document = uploaded_media.document
+                    media = raw.types.InputMediaDocument(
+                        id=raw.types.InputDocument(
+                            id=document.id,
+                            access_hash=document.access_hash,
+                            file_reference=document.file_reference
+                        )
+                    )
 
             while True:
                 try:
-                    peer = await self.resolve_peer(chat_id)
 
                     if receiver_user_id:
                         rpc = raw.functions.ephemeral.SendMessage(
